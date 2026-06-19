@@ -17,7 +17,7 @@ export default function App(): JSX.Element {
         </div>
       </nav>
 
-      <div className="flex-1 max-w-4xl mx-auto w-full px-4 py-12">
+      <div className="flex-1 min-h-[calc(100vh-145px)] max-w-4xl mx-auto w-full px-4 py-12">
         <header className="mb-12 text-center">
           <h1 className="text-5xl font-bold tracking-tight mb-3 gradient-text">
             Pokémon Finder

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import type { FormEvent } from 'react'
@@ -55,9 +55,31 @@ export default function Search(): JSX.Element {
   const [q, setQ] = useState('')
   const [inputValue, setInputValue] = useState('')
   const [page, setPage] = useState(1)
-  const perPage = 12
+  const [viewport, setViewport] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1280,
+    height: typeof window !== 'undefined' ? window.innerHeight : 900,
+  })
+
+  useEffect(() => {
+    function onResize() {
+      setViewport({ width: window.innerWidth, height: window.innerHeight })
+    }
+
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  const columns = viewport.width >= 768 ? 4 : viewport.width >= 640 ? 3 : 2
+  const reservedHeight = viewport.width >= 768 ? 500 : 460
+  const cardApproxHeight = 185
+  const rowsVisible = Math.max(1, Math.floor((viewport.height - reservedHeight) / cardApproxHeight))
+  const perPage = Math.max(columns, Math.min(20, columns * rowsVisible))
 
   const { data, isLoading, isFetching } = useSearch(q, page, perPage)
+
+  useEffect(() => {
+    setPage(1)
+  }, [perPage])
 
   function handleSearch(ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
