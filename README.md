@@ -16,6 +16,12 @@ Pokemon search app built with a split repository structure:
 - Basic caching with React Query and a FastAPI proxy
 - Docker + docker-compose for local development
 
+## Deployment
+
+- Frontend: https://ixpandit-search.onrender.com
+- Backend API: https://ixpandit-pokesearch-backend.onrender.com/api/search?q=pika&page=1&per_page=12
+- Backend docs: https://ixpandit-pokesearch-backend.onrender.com/docs
+
 ## Run locally
 
 ### Frontend
