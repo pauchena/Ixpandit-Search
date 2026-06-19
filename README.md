@@ -4,7 +4,7 @@ A search application to search for your favorite Pokémon that uses the PokeAPI 
 
 ## Preview
 
-![Pokemon finder preview](./image.png)
+![Pokemon finder preview](./src/assets/landing.png)
 
 Features:
 
