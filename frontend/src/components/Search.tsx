@@ -68,26 +68,32 @@ export default function Search(): JSX.Element {
   const totalPages = data?.total ? Math.ceil(data.total / perPage) : 0
 
   return (
-    <div className="space-y-6">
-      <form onSubmit={handleSearch} className="flex gap-2">
+    <div className="space-y-8">
+      <form onSubmit={handleSearch} className="flex gap-2 max-w-2xl mx-auto w-full">
         <Input
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Enter a name to search"
-          className="h-10"
+          placeholder="Search Pokémon by name..."
+          className="h-12 text-base bg-white border-2 border-gray-200 focus:border-violet-500 focus:ring-0"
         />
-        <Button type="submit" disabled={isFetching} className="h-10 px-6">
+        <Button 
+          type="submit" 
+          disabled={isFetching}
+          className="h-12 px-8 bg-gradient-to-r from-emerald-500 to-violet-600 hover:from-emerald-600 hover:to-violet-700 text-white font-medium transition-all"
+        >
           {isFetching ? 'Searching…' : 'Search'}
         </Button>
       </form>
 
       {q && (
         <>
-          <div>
-            <h2 className="text-lg font-semibold">Search results</h2>
+          <div className="max-w-4xl mx-auto w-full">
+            <h2 className="text-2xl font-bold">
+              <span className="gradient-text">Results</span>
+            </h2>
             {data?.total !== undefined && (
-              <p className="text-sm text-muted-foreground">
-                {data.total} result{data.total !== 1 ? 's' : ''}
+              <p className="text-sm text-muted-foreground mt-1">
+                Found <span className="font-semibold text-foreground">{data.total}</span> Pokémon
               </p>
             )}
           </div>
@@ -95,27 +101,33 @@ export default function Search(): JSX.Element {
           {isLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {Array.from({ length: perPage }).map((_, i) => (
-                <div key={i} className="h-36 rounded-xl bg-muted animate-pulse" />
+                <div key={i} className="h-48 rounded-2xl bg-gradient-to-br from-gray-100 to-gray-200 animate-pulse" />
               ))}
             </div>
           ) : data?.results?.length === 0 ? (
-            <p className="text-muted-foreground text-center py-12">No results found.</p>
+            <div className="text-center py-16">
+              <p className="text-lg text-muted-foreground">No Pokémon found matching "<span className="font-medium">{q}</span>"</p>
+              <p className="text-sm text-muted-foreground mt-2">Try a different search term</p>
+            </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {data?.results?.map((p) => (
-                <Card key={p.name} className="overflow-hidden hover:shadow-md transition-shadow">
-                  <CardContent className="flex flex-col items-center gap-2 pt-4">
+                <Card 
+                  key={p.name} 
+                  className="overflow-hidden hover:shadow-xl transition-all duration-300 border-0 bg-white hover:scale-105 hover:shadow-violet-200/50"
+                >
+                  <CardContent className="flex flex-col items-center gap-3 pt-6 pb-4 bg-gradient-to-br from-white via-emerald-50 to-violet-50">
                     {p.sprite ? (
-                      <img src={p.sprite} alt={p.name} className="w-20 h-20 object-contain" />
+                      <img src={p.sprite} alt={p.name} className="w-24 h-24 object-contain drop-shadow-sm" />
                     ) : (
-                      <div className="w-20 h-20 rounded bg-muted flex items-center justify-center text-muted-foreground text-xs">
-                        ?
+                      <div className="w-24 h-24 rounded-lg bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-gray-500 font-semibold">
+                        —
                       </div>
                     )}
-                    <p className="font-medium capitalize text-sm text-center">{p.name}</p>
-                    <div className="flex flex-wrap gap-1 justify-center">
+                    <p className="font-bold capitalize text-sm text-center text-gray-900">{p.name}</p>
+                    <div className="flex flex-wrap gap-1.5 justify-center">
                       {p.types?.map((t: string) => (
-                        <Badge key={t} className={`capitalize ${TYPE_COLORS[t] ?? 'bg-gray-100 text-gray-600'}`}>
+                        <Badge key={t} className={`capitalize text-xs ${TYPE_COLORS[t] ?? 'bg-gray-100 text-gray-600'}`}>
                           {t}
                         </Badge>
                       ))}
@@ -127,25 +139,27 @@ export default function Search(): JSX.Element {
           )}
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-center gap-3 pt-2">
+            <div className="flex items-center justify-center gap-4 pt-6">
               <Button
                 variant="outline"
                 size="sm"
                 disabled={page === 1}
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
+                className="px-6 border-2 hover:border-violet-500 hover:text-violet-600"
               >
-                Previous
+                ← Previous
               </Button>
-              <span className="text-sm text-muted-foreground">
-                Page {page} of {totalPages}
+              <span className="text-sm font-medium text-gray-600">
+                Page <span className="text-violet-600 font-bold">{page}</span> of <span className="text-violet-600 font-bold">{totalPages}</span>
               </span>
               <Button
                 variant="outline"
                 size="sm"
                 disabled={(data?.results?.length ?? 0) < perPage}
                 onClick={() => setPage((p) => p + 1)}
+                className="px-6 border-2 hover:border-emerald-500 hover:text-emerald-600"
               >
-                Next
+                Next →
               </Button>
             </div>
           )}
