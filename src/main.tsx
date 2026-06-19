@@ -5,8 +5,13 @@ import App from './App'
 import './styles.css'
 
 const queryClient = new QueryClient()
+const rootElement = document.getElementById('root')
 
-createRoot(document.getElementById('root')).render(
+if (!rootElement) {
+  throw new Error('Root element not found')
+}
+
+createRoot(rootElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <App />
