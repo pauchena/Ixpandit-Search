@@ -2,9 +2,11 @@ import React from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import axios from 'axios'
+import type { Mock } from 'vitest'
 import Search from './Search'
 
 vi.mock('axios')
+const mockedGet = axios.get as unknown as Mock
 
 function renderSearch() {
   const queryClient = new QueryClient({
@@ -28,7 +30,7 @@ describe('Search', () => {
   })
 
   test('requests partial-name search with pagination params', async () => {
-    axios.get.mockResolvedValueOnce({
+    mockedGet.mockResolvedValueOnce({
       data: {
         results: [{ name: 'pikachu', sprite: null, types: ['electric'] }],
         total: 1,
@@ -43,10 +45,13 @@ describe('Search', () => {
 
     const input = screen.getByPlaceholderText('Enter a name to search')
     const form = input.closest('form')
+    if (!form) {
+      throw new Error('Search form not found')
+    }
     fireEvent.submit(form)
 
     await waitFor(() => {
-      expect(axios.get).toHaveBeenCalledWith('/api/search', {
+      expect(mockedGet).toHaveBeenCalledWith('/api/search', {
         params: { q: 'pika', page: 1, per_page: 12 },
       })
     })
@@ -56,7 +61,7 @@ describe('Search', () => {
   })
 
   test('shows empty state when no matches are returned', async () => {
-    axios.get.mockResolvedValueOnce({
+    mockedGet.mockResolvedValueOnce({
       data: {
         results: [],
         total: 0,
@@ -71,6 +76,9 @@ describe('Search', () => {
 
     const input = screen.getByPlaceholderText('Enter a name to search')
     const form = input.closest('form')
+    if (!form) {
+      throw new Error('Search form not found')
+    }
     fireEvent.submit(form)
 
     expect(await screen.findByText('No results found.')).toBeTruthy()
