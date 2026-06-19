@@ -18,6 +18,8 @@ type SearchResponse = {
   total: number
 }
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, '') || '/api'
+
 const TYPE_COLORS: Record<string, string> = {
   fire: 'bg-orange-100 text-orange-700 border-orange-200',
   water: 'bg-blue-100 text-blue-700 border-blue-200',
@@ -44,7 +46,7 @@ function useSearch(query: string, page: number, perPage: number) {
     ['search', query, page, perPage],
     async (): Promise<SearchResponse> => {
       if (!query) return { results: [], total: 0 }
-      const res = await axios.get('/api/search', { params: { q: query, page, per_page: perPage } })
+      const res = await axios.get(`${API_BASE_URL}/search`, { params: { q: query, page, per_page: perPage } })
       return res.data as SearchResponse
     },
     { keepPreviousData: true, staleTime: 1000 * 60 }

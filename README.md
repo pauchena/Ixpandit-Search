@@ -43,3 +43,32 @@ docker-compose up --build
 ```
 
 Frontend will be available at http://localhost:5173 and backend at http://localhost:8000
+
+## Deploy
+
+Recommended setup: deploy backend and frontend as separate services.
+
+### 1. Deploy backend (Render/Railway/Fly)
+
+- Root directory: `backend/`
+- Build: use `backend/Dockerfile`
+- Expose port `8000`
+- Health check (optional): `/docs`
+
+You will get a URL like:
+
+`https://your-backend-domain.com`
+
+### 2. Deploy frontend (Vercel/Netlify/Render Static)
+
+- Root directory: `frontend/`
+- Build command: `npm ci && npm run build`
+- Publish directory: `dist`
+- Environment variable:
+
+`VITE_API_BASE_URL=https://your-backend-domain.com/api`
+
+Notes:
+
+- For local Docker/Nginx, keep `VITE_API_BASE_URL=/api`.
+- Example env template is in `frontend/.env.example`.
