@@ -1,7 +1,7 @@
 import React from 'react'
 import Search from './components/Search'
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <div className="flex-1 max-w-4xl mx-auto w-full px-4 py-10">
