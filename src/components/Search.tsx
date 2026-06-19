@@ -1,12 +1,24 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import type { FormEvent } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
-const TYPE_COLORS = {
+type PokemonResult = {
+  name: string
+  sprite: string | null
+  types: string[]
+}
+
+type SearchResponse = {
+  results: PokemonResult[]
+  total: number
+}
+
+const TYPE_COLORS: Record<string, string> = {
   fire: 'bg-orange-100 text-orange-700 border-orange-200',
   water: 'bg-blue-100 text-blue-700 border-blue-200',
   grass: 'bg-green-100 text-green-700 border-green-200',
@@ -27,19 +39,19 @@ const TYPE_COLORS = {
   steel: 'bg-slate-100 text-slate-600 border-slate-200',
 }
 
-function useSearch(query, page, perPage) {
+function useSearch(query: string, page: number, perPage: number) {
   return useQuery(
     ['search', query, page, perPage],
-    async () => {
+    async (): Promise<SearchResponse> => {
       if (!query) return { results: [], total: 0 }
       const res = await axios.get('/api/search', { params: { q: query, page, per_page: perPage } })
-      return res.data
+      return res.data as SearchResponse
     },
     { keepPreviousData: true, staleTime: 1000 * 60 }
   )
 }
 
-export default function Search() {
+export default function Search(): JSX.Element {
   const [q, setQ] = useState('')
   const [inputValue, setInputValue] = useState('')
   const [page, setPage] = useState(1)
@@ -47,7 +59,7 @@ export default function Search() {
 
   const { data, isLoading, isFetching } = useSearch(q, page, perPage)
 
-  function handleSearch(ev) {
+  function handleSearch(ev: FormEvent<HTMLFormElement>) {
     ev.preventDefault()
     setPage(1)
     setQ(inputValue)
@@ -102,7 +114,7 @@ export default function Search() {
                     )}
                     <p className="font-medium capitalize text-sm text-center">{p.name}</p>
                     <div className="flex flex-wrap gap-1 justify-center">
-                      {p.types?.map((t) => (
+                      {p.types?.map((t: string) => (
                         <Badge key={t} className={`capitalize ${TYPE_COLORS[t] ?? 'bg-gray-100 text-gray-600'}`}>
                           {t}
                         </Badge>
