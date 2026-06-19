@@ -4,4 +4,5 @@ Run locally with docker-compose:
 docker-compose up --build
 ```
 
-Frontend will be available at http://localhost:5173 and backend at http://localhost:8000
+Frontend lives in `frontend/` and will be available at http://localhost:5173.
+Backend lives in `backend/` and will be available at http://localhost:8000.
