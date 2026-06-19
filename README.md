@@ -1,10 +1,14 @@
-# Ixpandit Search
+# Ixpandit PokeSearch
 
-A search application (React frontend + Python FastAPI backend) that uses the PokeAPI as sample data.
+A search application to search for your favorite Pokémon that uses the PokeAPI as sample data.
+
+## Preview
+
+![Pokemon finder preview](./src/assets/landing.png)
 
 Features:
 
-- Search by partial name
+- Search Pokemons by partial name
 - Pagination
 - Basic caching with React Query and a FastAPI proxy
 - Docker + docker-compose for local development
