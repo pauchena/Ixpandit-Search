@@ -5,22 +5,22 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
+    --foreground: 17 27% 17%;
     --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
-    --primary: 220.9 39.3% 11%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
+    --card-foreground: 17 27% 17%;
+    --primary: 264 89% 48%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 166 100% 51%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 166 100% 51%;
+    --accent-foreground: 264 89% 48%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 224 71.4% 4.1%;
+    --border: 0 0% 90%;
+    --input: 0 0% 96%;
+    --ring: 264 89% 48%;
     --radius: 0.5rem;
   }
 }
@@ -31,5 +31,25 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Gradient background for hero section */
+@layer components {
+  .gradient-bg {
+    @apply bg-gradient-to-r from-green-50 via-blue-50 to-purple-50;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-emerald-400 via-cyan-400 to-violet-600 bg-clip-text text-transparent;
+  }
+  
+  .gradient-border {
+    @apply relative;
+  }
+  
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-lg bg-gradient-to-r from-emerald-400 to-violet-600 p-[2px] -z-10;
   }
 }
