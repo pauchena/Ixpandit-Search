@@ -17,12 +17,12 @@ jobs:
           node-version: '18'
       - name: Install deps
         run: |
-          cd $(pwd)
+          cd frontend
           npm ci
       - name: Run lint
-        run: npm run lint || true
+        run: cd frontend && npm run lint || true
       - name: Run tests
-        run: npm test || true
+        run: cd frontend && npm test || true
 
   backend:
     runs-on: ubuntu-latest
